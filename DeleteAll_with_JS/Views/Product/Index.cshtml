@@ -4,29 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>This is index page</h2>
-<a href="/Product/Create">create newwww</a>
+<h2>List index page</h2>
+<a href="/Product/Create">Create New</a>
 <ul>
-    <li>
-        <input type="checkbox" id="check-all" />
-        <span>Check All</span>
-    </li>
+
     @foreach (var product in Model)
     {
         <li>
             <span><input type="checkbox" class="check-item" id="check-id-@product.Id" /></span>
             <span>@product.Name - @product.Price</span>
-            <a href="/Product/Edit?id=@product.Id">Edit</a>
+
+            @*Edit is under construction*@
+            <a href="/Product/Edit">Edit</a>
             <a href="#" class="btn-delete" id="@product.Id">Delete</a>
         </li>
     }
+    
+    
+    <li>
+        <span>Please check if you want to delete all--</span>
+        <input type="checkbox" id="check-all"/>
+
+    </li>
 </ul>
 <button id="delete-all">Delete All</button>
 <script>
     var listBtnDelete = document.getElementsByClassName("btn-delete");
     for (var i = 0; i < listBtnDelete.length; i++) {
         listBtnDelete[i].onclick = function() {
-            if (confirm("Ban chac chan xoa???")) {
+            if (confirm("Ban chac chan xoa?")) {
                 var currentDeleteButton = this;
                 var deleteId = this.id;
                 var xmlHttpRequest = new XMLHttpRequest();
@@ -58,7 +64,7 @@
         }
         console.log(deleteIds);
         if (deleteIds.length === 0) {
-            alert("Chon it nhat 1 doi tuong");
+            alert("Chon it nhat 1 doi tuong !!");
             return;
         }
         // call ajax.

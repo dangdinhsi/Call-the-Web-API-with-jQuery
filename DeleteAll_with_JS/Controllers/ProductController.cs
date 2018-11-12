@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DeleteAll_with_JS.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeleteAll_with_JS.Controllers
 {
@@ -34,16 +35,34 @@ namespace DeleteAll_with_JS.Controllers
             return Redirect("Index");
         }
 
-        public IActionResult Edit(long id)
+        public /*async Task<*/IActionResult/*>*/ Edit(/*long? id*/)
         {
-            var product = _context.Product.Find(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
+        //    var product = await _context.Product.FindAsync(id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(product);
+            return View();
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(long id, [Bind("Id,Name,Price")] Product product)
+        //{
+        //    if (id != product.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Update(product);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return View(product);
+        //}
 
         public IActionResult Update(Product product)
         {
