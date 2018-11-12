@@ -1,0 +1,78 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>This is index page</h2>
+<a href="/Product/Create">create newwww</a>
+<ul>
+    <li>
+        <input type="checkbox" id="check-all" />
+        <span>Check All</span>
+    </li>
+    @foreach (var product in Model)
+    {
+        <li>
+            <span><input type="checkbox" class="check-item" id="check-id-@product.Id" /></span>
+            <span>@product.Name - @product.Price</span>
+            <a href="/Product/Edit?id=@product.Id">Edit</a>
+            <a href="#" class="btn-delete" id="@product.Id">Delete</a>
+        </li>
+    }
+</ul>
+<button id="delete-all">Delete All</button>
+<script>
+    var listBtnDelete = document.getElementsByClassName("btn-delete");
+    for (var i = 0; i < listBtnDelete.length; i++) {
+        listBtnDelete[i].onclick = function() {
+            if (confirm("Ban chac chan xoa???")) {
+                var currentDeleteButton = this;
+                var deleteId = this.id;
+                var xmlHttpRequest = new XMLHttpRequest();
+                xmlHttpRequest.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        alert("Xoa thanh cong!!!");
+                        currentDeleteButton.parentElement.remove();
+                    }
+                }
+                xmlHttpRequest.open("DELETE", "/Product/Delete?id=" + deleteId, true);
+                xmlHttpRequest.send();
+            }
+        };
+    }
+
+    var checkAll = document.getElementById("check-all");
+    var listCheckbox = document.getElementsByClassName("check-item");
+    checkAll.onclick = function() {
+        for (var i = 0; i < listCheckbox.length; i++) {
+            listCheckbox[i].checked = this.checked;
+        }
+    }
+    var deleteAll = document.getElementById("delete-all");
+    deleteAll.onclick = function() {
+        var checkedItems = document.querySelectorAll(".check-item:checked");
+        var deleteIds = new Array();
+        for (var i = 0; i < checkedItems.length; i++) {
+            deleteIds.push(checkedItems[i].id.replace("check-id-", ""));
+        }
+        console.log(deleteIds);
+        if (deleteIds.length === 0) {
+            alert("Chon it nhat 1 doi tuong");
+            return;
+        }
+        // call ajax.
+        var xmlHttpRequest = new XMLHttpRequest();
+        xmlHttpRequest.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                alert("Xoa all thanh cong!!");
+                
+            }
+        }
+        xmlHttpRequest.open("DELETE", "/Product/DeleteAll?ids=" + deleteIds, true);
+        xmlHttpRequest.send();
+        
+    }
+</script>
+
+
